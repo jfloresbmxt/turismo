@@ -2,7 +2,7 @@ import pandas as pd
 import plotly.express as px
 
 def get_pib():
-    path = "C:/Users/jflores/Downloads/Estudios Economicos/Turismo/data/indicadores_turisticos.xlsx"
+    path = "data/indicadores_turisticos.xlsx"
     df = pd.read_excel(path, sheet_name = "PIB")
     df = pd.melt(df, id_vars = "Concepto").rename(columns={'variable': 'Año', 'value':'PIB'})
     df["Concepto"] = df.Concepto.apply(lambda x: x.strip())
@@ -23,7 +23,7 @@ def gen_graph():
     return fig
 
 def gen_table():
-    path = "C:/Users/jflores/Downloads/Estudios Economicos/Turismo/data/indicadores_turisticos.xlsx"
+    path = "data/indicadores_turisticos.xlsx"
     df = pd.read_excel(path, sheet_name = "PIB")
     df = (df.set_index("Concepto")).T
     df = (df/1000)

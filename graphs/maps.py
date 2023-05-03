@@ -7,7 +7,7 @@ repo_url = "https://raw.githubusercontent.com/angelnmara/geojson/master/mexicoHi
 mx_regions_geo = requests.get(repo_url).json()
 
 def get_state_info(var):
-    path = "C:/Users/jflores/Downloads/Estudios Economicos/Turismo/data/indicadores_turisticos.xlsx"
+    path = "data/indicadores_turisticos.xlsx"
     df = pd.read_excel(path, sheet_name = "Datatur (2)")
     df = (df[(df["Centro_Turístico"] == "Total") & (df["Estado"] != "Nacional")]
           .rename(columns={"Llegada_de_Turistas_Nacionales": "Nacionales",
