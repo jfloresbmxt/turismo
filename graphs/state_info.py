@@ -26,30 +26,30 @@ def get_state_info(x):
          return df
 
 def arrive():
-        fig = px.bar(get_state_info("Nacional"), x="Año", y=["Nacionales","Extranjeros"], 
+    fig = px.bar(get_state_info("Nacional"), x="Año", y=["Nacionales","Extranjeros"], 
                 title="Llegada de Turistas",
                 template="simple_white",
                 text_auto= ".2s",
                 color_discrete_sequence=["#B38E5D", "#D4C19C"])
-        fig.update_layout(hovermode="x unified")
-        fig.update_traces(textfont_size=12, textangle=0, cliponaxis=False)
-        fig.update_xaxes(
+    fig.update_layout(hovermode="x unified")
+    fig.update_traces(textfont_size=12, textangle=0, cliponaxis=False)
+    fig.update_xaxes(
                 tickangle = 270,
                 title_font = {"size": 14},
                 color = "black"
                 )
-        fig.update_yaxes(
+    fig.update_yaxes(
                 title_font = {"size": 14},
                 color = "black",
                 visible = False
                 )
-        fig.update_layout(
+    fig.update_layout(
                 legend=dict(orientation='h', title = "", yanchor='bottom',xanchor='center',y=-0.5,x=0.5)
                 )
-        fig.update_layout(title_text="Llegada de turistas<br><sup>(Millones de turistas)</sup>", title_x=0.5, title_xanchor = "center")
-        fig.update_traces(hovertemplate = '%{y:,.0f} ')
+    fig.update_layout(title_text="Llegada de turistas<br><sup>(Millones de turistas)</sup>", title_x=0.5, title_xanchor = "center")
+    fig.update_traces(hovertemplate = '%{y:,.0f} ')
         
-        return fig
+    return fig
 
 def availability():
     df = get_state_info("Nacional")
