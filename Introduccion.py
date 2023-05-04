@@ -8,7 +8,7 @@ st.set_page_config(
 
 st.title('Tablero indicadores económicos de Turismo')
 
-st.balloons()
+# st.balloons()
 
 # def show_pdf(file_path):
 #     with open(file_path,"rb") as f:
@@ -18,9 +18,10 @@ st.balloons()
 
 # with open("panorama.pdf", "rb") as pdf_file:
 #     PDFbyte = pdf_file.read()
+
 with open("panorama.pdf","rb") as f:
     base64_pdf = base64.b64encode(f.read()).decode('utf-8')
-pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="800" height="800" type="application/pdf"></iframe>'
+pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="800" height="800" type="application/pdf"></embed>'
 st.markdown(pdf_display, unsafe_allow_html=True)
 
 
