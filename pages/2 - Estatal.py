@@ -1,11 +1,15 @@
 import streamlit as st
 import numpy as np
-from graphs.maps import gen_map
+from graphs.state_info import gen_map
+from graphs.remove_hamburger import hide_menu
 
 st.set_page_config(
     page_title="Indicadores Estatales",
     page_icon="airplane",
 )
+
+# Esconder Menu por default
+hide_menu()
 
 st.title("Indicadores Estatales")
 option = st.selectbox(

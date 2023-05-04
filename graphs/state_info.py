@@ -1,7 +1,6 @@
 import pandas as pd
 import plotly.express as px
 import requests
-from pathlib import Path
 
 repo_url = "https://raw.githubusercontent.com/angelnmara/geojson/master/mexicoHigh.json"
 mx_regions_geo = requests.get(repo_url).json()

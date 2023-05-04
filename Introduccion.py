@@ -1,11 +1,15 @@
 import streamlit as st
 import base64
 from  PIL import Image
+from graphs.remove_hamburger import hide_menu
 
 st.set_page_config(
     page_title="Turismo",
     page_icon="airplane",
 )
+
+# Esconder Menu por default
+hide_menu()
 
 st.title('Tablero indicadores económicos de Turismo')
 
