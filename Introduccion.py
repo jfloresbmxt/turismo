@@ -24,7 +24,7 @@ def show_pdf(file_path):
     pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="800" height="800" type="application/pdf"></iframe>'
     st.markdown(pdf_display, unsafe_allow_html=True)
 
-feature_image1 = Image.open('bmxt.jpg')
+feature_image1 = Image.open('panorama.jpg')
 with st.container():
     image_col, text_col = st.columns((1,3))
     with image_col:

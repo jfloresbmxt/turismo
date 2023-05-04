@@ -1,7 +1,7 @@
 import streamlit as st
 from graphs.pib_info import gen_graph, table_style, gen_table
 from graphs.remove_hamburger import hide_menu
-from graphs.state_info import arrive, availability
+from graphs.state_info import arrive, availability, gen_table_state, table_style_state
 
 st.set_page_config(
     page_title="Indicadores Nacionales",
@@ -61,7 +61,7 @@ pib_section()
 st.divider()
 def arrive_section():
     # Get data and graphs
-    df = table_style()
+    df = table_style_state("llegadas")
     fig = arrive()
 
     tab1, tab2 = st.tabs(["Gráfica", "Datos"])
@@ -71,7 +71,32 @@ def arrive_section():
         st.plotly_chart(fig, use_container_width=True)
 
     with tab2:
-        st.markdown("Work in progress")
+        hide_table_row_index = """
+                    <style>
+                    thead tr th:first-child {display:none}
+                    tbody th {display:none}
+                    </style>
+                    """
+
+        # Inject CSS with Markdown
+        st.markdown(hide_table_row_index, unsafe_allow_html=True)
+
+        # Table
+        st.table(df)
+
+        @st.cache_data
+        def convert_df(df):
+            # IMPORTANT: Cache the conversion to prevent computation on every rerun
+            return df.to_csv(index = False).encode('latin1')
+
+        csv = convert_df(gen_table_state("llegadas"))
+
+        st.download_button(
+            label="Descargar Tabla",
+            data=csv,
+            file_name='llegada_turistas.csv',
+            mime='text/csv',
+        )
         
 
 st.header("Llegada de Turistas")
@@ -80,7 +105,7 @@ arrive_section()
 st.divider()
 def availability_section():
     # Get data and graphs
-    df = table_style()
+    df = table_style_state("disponibilidad")
     fig = availability()
 
     tab1, tab2 = st.tabs(["Gráfica", "Datos"])
@@ -90,7 +115,32 @@ def availability_section():
         st.plotly_chart(fig, use_container_width=True)
 
     with tab2:
-        st.markdown("Work in progress")
+        hide_table_row_index = """
+                    <style>
+                    thead tr th:first-child {display:none}
+                    tbody th {display:none}
+                    </style>
+                    """
+
+        # Inject CSS with Markdown
+        st.markdown(hide_table_row_index, unsafe_allow_html=True)
+
+        # Table
+        st.table(df)
+
+        @st.cache_data
+        def convert_df(df):
+            # IMPORTANT: Cache the conversion to prevent computation on every rerun
+            return df.to_csv(index = False).encode('latin1')
+
+        csv = convert_df(gen_table_state("disponibilidad"))
+
+        st.download_button(
+            label="Descargar Tabla",
+            data=csv,
+            file_name='disponibilidad_cuartos.csv',
+            mime='text/csv',
+        )
 
 st.header("Disponibilidad de cuartos")
 availability_section()

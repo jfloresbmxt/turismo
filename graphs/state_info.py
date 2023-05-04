@@ -102,6 +102,45 @@ def availability():
 
     return fig
 
+def gen_table_state(x):
+    df = get_state_info("Nacional")
+    if x == "llegadas":
+        df = df[["Año", "Nacionales", "Extranjeros"]]
+        df["Año"] = df["Año"].apply(str)
+        return df
+    if x == "disponibilidad":
+        df = df[["Año", "Cuartos", "Ocupacion"]]
+        df["Año"] = df["Año"].apply(str)
+        return df
+
+def table_style_state(x):
+    df = gen_table_state(x)
+    # style
+    th_props = [
+    ('font-size', '16px'),
+    ('text-align', 'center'),
+    ('font-weight', 'bold'),
+    ('color', '#ffffff'),
+    ('background-color', '#B38E5D')
+    ]
+
+    td_props = [
+    ('font-size', '14px')
+    ]
+
+    styles = [
+    dict(selector="th", props=th_props),
+    dict(selector="td", props=td_props)
+    ]
+
+    # table
+    df = (df.style
+        .format(precision=2, thousands=",")
+        .set_properties(**{'text-align': 'left'})
+        .set_table_styles(styles))
+    
+    return df
+
 def gen_map(var):
     df = get_state_info("Estatal")
     min = df[var].min()
