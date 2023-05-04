@@ -19,6 +19,22 @@ def gen_graph():
               color_discrete_sequence=["#9D2449", "#13322B", "#B38E5D"])
     fig.update_traces(mode="markers+lines", hovertemplate=None)
     fig.update_layout(hovermode="x unified")
+    fig.update_xaxes(
+        tickangle = 270,
+        title_font = {"size": 18},
+        color = "black"
+        )
+    fig.update_xaxes(
+        title_font = {"size": 14},
+        color = "black"
+        )
+    fig.update_layout(title_text="Pib Turístico<br><sup>(Mil mdp a precios del 2013)</sup>", 
+                      title_x=0.5, 
+                      title_xanchor = "center")
+    fig.update_traces(hovertemplate = '%{y:,.0f} ')
+    fig.update_layout(
+        legend=dict(orientation='h', title = "", yanchor='bottom',xanchor='center',y=-0.5,x=0.5)
+        )
     
     return fig
 

@@ -1,21 +1,109 @@
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 import requests
 
 repo_url = "https://raw.githubusercontent.com/angelnmara/geojson/master/mexicoHigh.json"
 mx_regions_geo = requests.get(repo_url).json()
 
-def get_state_info(var):
+def get_state_info(x):
     path = "data/indicadores_turisticos.xlsx"
     df = pd.read_excel(path, sheet_name = "Datatur (2)")
-    df = (df[(df["Centro_Turístico"] == "Total") & (df["Estado"] != "Nacional")]
-          .rename(columns={"Llegada_de_Turistas_Nacionales": "Nacionales",
-                           "Llegada_de_Turistas_Extranjeros": "Extranjeros"}))
+    df = df.rename(columns = {"Llegada_de_Turistas_Nacionales": "Nacionales",
+                              "Llegada_de_Turistas_Extranjeros": "Extranjeros",
+                              "Cuartos_Disponibles_": "Cuartos",
+                              "Porcentaje_de_Ocupación_Total": "Ocupacion"
+                            })
     df.Estado = df.Estado.apply(lambda x: "México" if x == "Estado de México" else x)
-    return df
+    
+    if x == "Nacional":
+         df = df.query("Estado == 'Nacional'")
+         return df
+    if x == "Estatal":
+         df = df.query("Centro_Turístico == 'Total' & Estado != 'Nacional'")
+         
+         return df
+
+def arrive():
+        fig = px.bar(get_state_info("Nacional"), x="Año", y=["Nacionales","Extranjeros"], 
+                title="Llegada de Turistas",
+                template="simple_white",
+                text_auto= ".2s",
+                color_discrete_sequence=["#B38E5D", "#D4C19C"])
+        fig.update_layout(hovermode="x unified")
+        fig.update_traces(textfont_size=12, textangle=0, cliponaxis=False)
+        fig.update_xaxes(
+                tickangle = 270,
+                title_font = {"size": 14},
+                color = "black"
+                )
+        fig.update_yaxes(
+                title_font = {"size": 14},
+                color = "black",
+                visible = False
+                )
+        fig.update_layout(
+                legend=dict(orientation='h', title = "", yanchor='bottom',xanchor='center',y=-0.5,x=0.5)
+                )
+        fig.update_layout(title_text="Llegada de turistas<br><sup>(Millones de turistas)</sup>", title_x=0.5, title_xanchor = "center")
+        fig.update_traces(hovertemplate = '%{y:,.0f} ')
+        
+        return fig
+
+def availability():
+    df = get_state_info("Nacional")
+    df["Cuartos"] = df["Cuartos"]/1000000
+
+    # Create figure with secondary y-axis
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
+
+    # Add traces
+    fig.add_trace(
+        go.Bar(x = df["Año"], y = df["Cuartos"],
+            marker=dict(color = "#D4C19C"), 
+            name="Cuartos disponibles (millones)",
+            text = df["Cuartos"],
+            texttemplate = "%{y:,.0f}",
+            textposition='inside'),
+            secondary_y = False,
+    )
+
+    fig.add_trace(
+        go.Scatter(x = df["Año"], y = df["Ocupacion"],
+                mode='markers+text',
+                marker=dict(color="#9D2449"),
+                name="Porcentaje de ocupación",
+                text= df["Ocupacion"],
+                texttemplate = "%{y:,.2f}",
+                textposition='top center',),
+        secondary_y = True,
+    )
+    fig.update_layout(template="simple_white")
+
+    fig.update_xaxes(title_text="Año")
+
+    # Set y-axes titles
+    fig.update_yaxes(title_text="Número de Cuartos", secondary_y=False, range=[0,300])
+    fig.update_yaxes(title_text="Porcentaje", secondary_y=True, range=[0,0.6])
+
+    fig.update_layout(hovermode="x unified")
+    fig.update_layout(
+        hoverlabel=dict(
+            font_size=10,
+            font_family="Montserrat"
+        )
+    )
+    fig.update_layout(
+                legend=dict(orientation='h', title = "", yanchor='bottom',xanchor='center',y=-0.5,x=0.5)
+                )
+    fig.update_layout(title_text="Cuartos disponibles y porcentaje de ocupación<br><sup>(Millones de cuartos y porcentaje)</sup>", title_x=0.5, title_xanchor = "center")
+    fig.update_traces(hovertemplate = '%{y:,.2f}')
+
+    return fig
 
 def gen_map(var):
-    df = get_state_info(var)
+    df = get_state_info("Estatal")
     min = df[var].min()
     max = df[var].max()
 
