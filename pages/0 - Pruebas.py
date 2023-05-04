@@ -16,8 +16,8 @@ with st.sidebar:
     }
     )
 
-logo = Image.open(r'C:\Users\jflores\Downloads\Estudios Economicos\Turismo\streamlit\bmxt.jpg')
-profile = Image.open(r"C:\Users\jflores\Downloads\Estudios Economicos\Turismo\streamlit\bmxt.jpg")
+logo = Image.open('bmxt.jpg')
+profile = Image.open("bmxt.jpg")
 if choose == "About":
     col1, col2 = st.columns( [0.8, 0.2])
     with col1:               # To display the header text using css style
@@ -51,7 +51,7 @@ elif choose == "Blog":
             st.markdown(pdf_display, unsafe_allow_html=True)
         
         if topic=='Pandas':
-            feature_image1 = Image.open(r'C:\Users\jflores\Downloads\Estudios Economicos\Turismo\streamlit\bmxt.jpg')
+            feature_image1 = Image.open('bmxt.jpg')
             with st.container():
                 image_col, text_col = st.columns((1,3))
                 with image_col:
