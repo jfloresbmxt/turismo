@@ -1,6 +1,11 @@
 import streamlit as st
 from graphs.graph1 import gen_graph, table_style, gen_table
 
+st.set_page_config(
+    page_title="Indicadores Nacionales",
+    page_icon="airplane",
+)
+
 st.title("Indicadores Nacionales")
 
 df = table_style()
