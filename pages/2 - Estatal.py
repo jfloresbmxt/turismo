@@ -1,5 +1,4 @@
 import streamlit as st
-import numpy as np
 from graphs.state_info import gen_map, get_list, get_centers
 from graphs.remove_hamburger import hide_menu
 
