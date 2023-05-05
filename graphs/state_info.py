@@ -7,7 +7,7 @@ import requests
 repo_url = "https://raw.githubusercontent.com/angelnmara/geojson/master/mexicoHigh.json"
 mx_regions_geo = requests.get(repo_url).json()
 
-def get_state_info(x):
+def get_data():
     path = "data/indicadores_turisticos.xlsx"
     df = pd.read_excel(path, sheet_name = "Datatur (2)")
     df = df.rename(columns = {"Llegada_de_Turistas_Nacionales": "Nacionales",
@@ -16,6 +16,11 @@ def get_state_info(x):
                               "Porcentaje_de_Ocupación_Total": "Ocupacion"
                             })
     df.Estado = df.Estado.apply(lambda x: "México" if x == "Estado de México" else x)
+
+    return df
+
+def get_state_info(x):
+    df = get_data()
     
     if x == "Nacional":
          df = df.query("Estado == 'Nacional'")
@@ -24,6 +29,20 @@ def get_state_info(x):
          df = df.query("Centro_Turístico == 'Total' & Estado != 'Nacional'")
          
          return df
+
+def get_list():
+    df = get_data()
+    estados = df["Estado"].unique()
+    estados = list(estados)
+
+    return estados
+
+def get_centers(state):
+    df = get_data()
+    c_turisticos = df[df["Estado"] == state]["Centro_Turístico"].unique()
+
+    return c_turisticos
+
 
 def arrive():
     fig = px.bar(get_state_info("Nacional"), x="Año", y=["Nacionales","Extranjeros"], 
